@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FrameworkListView: View {
     
-    @State var list: [AppleFramework] = AppleFramework.list
+    @StateObject var vm = FrameworkListViewModel()
     
     let layout: [GridItem] = [
         GridItem(.flexible()),
@@ -19,25 +19,26 @@ struct FrameworkListView: View {
     
     var body: some View {
         
-        // Grid 만들기
-        // - UIKit : UICollectionView
-        //   - Data, Presentaion, Layout
-        // - SwiftUI : LazyVGrid, LazyHGrid
-        //   - ✅ Data, ✅ Presentaion, ✅ Layout
-        
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: layout) {
-                    ForEach(list) { item in
-                        FrameworkCell(framework: item)
+                    // binding으로 넘어와서 $ 추가.
+                    ForEach($vm.models) { $item in
+                        FrameworkCell(framework: $item)
+                            .onTapGesture{
+                                vm.isShowingDetail = true
+                                vm.selectedItem = item
+                            }
                     }
                 }
                 .padding([.top, .leading, .trailing], 16.0)
             }
             .navigationTitle("☀️ Apple Framework")
         }
-        
-        
+        .sheet(isPresented: $vm.isShowingDetail) {
+            FrameworkDetailView(framework: $vm.selectedItem)
+        }
+        // modal 창이 아니고 전체화면은 .sheet말고 .fullScreenCover 사용
     }
 }
 
