@@ -36,7 +36,8 @@ struct FrameworkListView: View {
             .navigationTitle("☀️ Apple Framework")
         }
         .sheet(isPresented: $vm.isShowingDetail) {
-            FrameworkDetailView(framework: $vm.selectedItem)
+            let vm = FrameworkDetailViewModel(framework: vm.selectedItem!)
+            FrameworkDetailView(viewModel: vm)
         }
         // modal 창이 아니고 전체화면은 .sheet말고 .fullScreenCover 사용
     }

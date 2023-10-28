@@ -9,33 +9,36 @@ import SwiftUI
 
 struct FrameworkDetailView: View {
     
-    @Binding var framework: AppleFramework?
-    // 환경변수 설정
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @StateObject var viewModel: FrameworkDetailViewModel
+    
+    // 창 닫기 환경변수 설정
+    //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         VStack(spacing: 20) {
-            if let framework = framework {
-                Image(framework.imageName)
-                Text(framework.name)
-                Text(framework.description)
-            } else {
-                Text("Nothing selected.")
-            }
+            Spacer()
+            Image(viewModel.framework.imageName)
+                .resizable()
+                .frame(width: 80, height: 80)
+            Text(viewModel.framework.name)
+                .font(.system(size: 24, weight: .bold))
+            Text(viewModel.framework.description)
             
+            Spacer() // 버튼을 화면 하단에 고정시키기 위함
             Button(action: {
-                presentationMode.wrappedValue.dismiss() // 창닫기
+                //   presentationMode.wrappedValue.dismiss() // 창닫기
             }, label: {
-                Text("Button")
+                Text("Learn More")
+                    .frame(maxWidth: .infinity, minHeight: 80) // 프레임을 label에 줘야 전체 터치가능함.
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
             })
-            .frame(maxWidth: .infinity, minHeight: 80)
             .background(Color.blue)
-            .foregroundColor(.white)
             .clipShape(.capsule)
-        }.padding()
+        }.padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
     }
 }
 
 #Preview {
-    FrameworkDetailView(framework: .constant(AppleFramework.list[0]))
+    FrameworkDetailView(viewModel: FrameworkDetailViewModel(framework: AppleFramework.list[0]))
 }
