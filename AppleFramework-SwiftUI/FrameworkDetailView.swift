@@ -27,6 +27,7 @@ struct FrameworkDetailView: View {
             Spacer() // 버튼을 화면 하단에 고정시키기 위함
             Button(action: {
                 //   presentationMode.wrappedValue.dismiss() // 창닫기
+                viewModel.isSafariPresented = true
             }, label: {
                 Text("Learn More")
                     .frame(maxWidth: .infinity, minHeight: 80) // 프레임을 label에 줘야 전체 터치가능함.
@@ -35,7 +36,15 @@ struct FrameworkDetailView: View {
             })
             .background(Color.blue)
             .clipShape(.capsule)
-        }.padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
+        }
+        .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
+        .sheet(isPresented: $viewModel.isSafariPresented) {
+            if let validURL = URL(string: viewModel.framework.urlString) {
+                SafariView(url: validURL)
+            } else {
+                Text("Invalid URL")
+            }
+        }
     }
 }
 
