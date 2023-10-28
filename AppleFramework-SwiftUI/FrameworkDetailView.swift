@@ -38,7 +38,7 @@ struct FrameworkDetailView: View {
             .clipShape(.capsule)
         }
         .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
-        .sheet(isPresented: $viewModel.isSafariPresented) {
+        .fullScreenCover(isPresented: $viewModel.isSafariPresented) {
             if let validURL = URL(string: viewModel.framework.urlString) {
                 SafariView(url: validURL)
             } else {
