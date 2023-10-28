@@ -10,6 +10,8 @@ import SwiftUI
 struct FrameworkDetailView: View {
     
     @Binding var framework: AppleFramework?
+    // 환경변수 설정
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         VStack(spacing: 20) {
@@ -22,7 +24,7 @@ struct FrameworkDetailView: View {
             }
             
             Button(action: {
-                
+                presentationMode.wrappedValue.dismiss() // 창닫기
             }, label: {
                 Text("Button")
             })
